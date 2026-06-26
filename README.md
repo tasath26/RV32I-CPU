@@ -86,10 +86,10 @@ OR
 
 ### Usage
 1. Clone the repository:
-   ```bash
+```bash
    git clone [https://github.com/tasath26/RV32I-CPU.git](https://github.com/tasath26/RV32I-CPU.git)
    cd RV32I-CPU
-   ```
+```
     
 2. Choose Platform 
 ```bash
