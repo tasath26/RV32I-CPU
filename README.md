@@ -55,7 +55,7 @@ This processor implements the standard **RV32I** Base Integer Instruction Set:
 
 ---
 
-## 🛠️ Design & Tools Used
+## Tools
 
 * **Language**: [SystemVerilog]
 * **Simulation**: [Icarus Verilog and Synopsys VCS]
@@ -100,5 +100,5 @@ OR
 3. Make and run Tests 
 ```bash
     make tests 
-    make run TEST=<testname without the .hex suffix>
+    make run TEST=<testname without the .hex suffix> TEST_DIR=<directory containing tests>
 ```
