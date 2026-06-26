@@ -30,9 +30,9 @@ module dmem #(
     output logic [31:0] read_data
 );
 
-    localparam DMEM_BASE = 32'h00008000;
+    localparam DMEM_BASE = 32'h00000000;
     
-    logic [31:0] mem [0:255]; 
+    logic [31:0] mem [0:4095]; 
 
     logic [31:0] byte_offset;
     assign byte_offset = addr - DMEM_BASE;
