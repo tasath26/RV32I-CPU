@@ -1,69 +1,104 @@
+# RV32I RISC-V CPU
 
-## RV32I-CPU
+A fully pipelined 32-bit RISC-V (RV32I) processor core featuring branch prediction, forwarding/hazard detection logic, and verification.
 
-## Description
-A RV32I CPU, Design, Implementation and verification. 
+## Architecture
+
+The core follows a balanced 5-stage execution model. Data forwarding paths allow instructions to consume results before they are officially written back to the register file, drastically improving IPC.
+
+![Block Diagram](./screenshots/block_diagram.png)
+
 
 
 ## Specification
 
-This project implements an RV32I RISC-V Processor.
-It supports basic integer, memory, and control flow instructions and will be
-eventually extended to support a 5-stage pipeline and branch prediction techniques.
-
-
-![Block Diagram](./screenshots/block_diagram.png)
-
-#### Supported Instruction Set
-
-The RISC-V RV32I Instructions excluding ecall and ebreak.
-
-#### Datapath / Architectural Blocks
-``` 
-- Register File
-- ALU
-- Control Unit
-- Branch Evaluation Unit
-- Memory Operation Unit
-- Immediate Generator
-- Instruction Memory
-- Data Memory
-- Program Counter (PC) + Next PC Logic
-- Pipeline Control Unit
-``` 
+* **ISA Compliance**: Full support for the RISC-V `RV32I` base integer instruction set. 
+All of RISC-V Official RV32I Compliance tests pass successfully.
+* **5-Stage Pipeline**: Classic RISC pipeline architecture divided into:
+    1.  **IF** (Instruction Fetch)
+    2.  **ID** (Instruction Decode / Register Read)
+    3.  **EX** (Execute / ALU / Address Generation)
+    4.  **MEM** (Memory Access)
+    5.  **WB** (Write Back)
+* **Hazard Management**: 
+    * Pipeline control unit to eliminate data stalls where possible.
+    * Automatic pipeline interlocking/stalling for unavoidable hazards.
+* **Branch Prediction**: Integrated branch prediction unit to minimize control hazard penalties and optimize CPI.
+* **Verification**: Testbenches and simulation setups verifying edge cases, instruction coverage, and pipeline testing.
 
 ---
 
-Tests:
-```
-    - simple:       Tests basic instructions.
-    - alu:          Tests all alu operations.
-    - branch:       Tests branch operations. 
-    - jump:         Tests changes in control flow.
-    - loadstore:    Tests memory operations. 
-    - lui_auipc:    Tests lui and auipc instructions.
-``` 
+
+## Branch Prediction 
+
+The processor core implements a **2-Bit Global Branch Predictor** coupled with a **Branch Target Buffer (BTB)** in the Fetch (IF) stage.
+
+### Architecture Overview
+* **Global History Register (GHR)**: A single, global 2-bit saturating up-down counter that tracks the outcome of branches across the execution of a program.
+* **Branch Target Buffer (BTB)**: A table that stores the target addresses of previously executed branches.
+
+
+--- 
+
+## Supported Instruction Set
+
+This processor implements the standard **RV32I** Base Integer Instruction Set:
+
+* **R-Type**: `add`, `sub`, `sll`, `slt`, `sltu`, `xor`, `srl`, `sra`, `or`, `and`
+* **I-Type**: `addi`, `slti`, `sltiu`, `xori`, `ori`, `andi`, `slli`, `srli`, `srai`, `lb`, `lh`, `lw`, `lbu`, `lhu`, `jalr`
+* **S-Type**: `sb`, `sh`, `sw`
+* **B-Type**: `beq`, `bne`, `blt`, `bge`, `bltu`, `bgeu`
+* **U-Type**: `lui`, `auipc`
+* **J-Type**: `jal`
+
+> Excluding System instructions: `ecall` and `ebreak`.
 
 ---
 
-## Requirements
-riscv toolchain
-icarus 
-GTKWave
+## 🛠️ Design & Tools Used
 
-## Usage 
+* **Language**: [SystemVerilog]
+* **Simulation**: [Icarus Verilog and Synopsys VCS]
+* **Waveform Viewer**: [GTKWave]
+* **Synthesis**: [Synopsys Design Compiler]
+
+### Synthesis 
+
+The design was synthesized using Synopsys Design Compiler. The timing results below demonstrate the maximum operating frequency achieved by the 5-stage pipelined architecture:
+
+| Metric | Value | Notes |
+| :--- | :--- | :--- |
+| **Target Clock Period** | 5.5 ns | Critical path constrained during synthesis |
+| **Max Frequency** | 182 MHz | Achieved after pipeline stage balancing |
+
+---
+
+## Installation & Usage
+
+### Prerequisites
+* iverilog
+* GTKWave
+* RISC-V GNU Toolchain (Optional, for compiling your own assembly tests)
+
+OR 
+
+* Synopsys
+
+### Usage
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/tasath26/RV32I-CPU.git](https://github.com/tasath26/RV32I-CPU.git)
+   cd RV32I-CPU
+   ```
+    
+2. Choose Platform 
 ```bash
-make tests 
-make run TEST=<testfile> (without the .hex suffix) 
-
+    chmod +x platform.sh
+    ./platform.sh <icarus OR synopsys>
 ```
 
-## Link and Material
-
-- [RISC-V ISA Specification](https://riscv.org/technical/specifications/)
-- [RISC-V Instruction Reference](https://www.cs.sfu.ca/~ashriram/Courses/CS295/assets/notebooks/RISCV/RISCV_CARD.pdf)
-- [RISC-V Instruction Guide](https://lhtin.github.io/01world/app/riscv-isa/?xlen=32)
-- [CS-225 Pipeline Lecture](https://www.csd.uoc.gr/~hy225/21a/09b_noDep.pdf)
-- [Icarus Verilog](https://github.com/steveicarus/iverilog)
-- [GTKWave](https://github.com/gtkwave/gtkwave)
-
+3. Make and run Tests 
+```bash
+    make tests 
+    make run TEST=<testname without the .hex suffix>
+```

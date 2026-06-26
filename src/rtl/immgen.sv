@@ -11,7 +11,6 @@
 // Outputs:
 //    immediate : The immediate extracted from the instruction
 //============================================================
-
 import rv32i_pkg::*;
 
 module immgen
@@ -29,10 +28,19 @@ always_comb begin
   case (opcode)
     
     // Immediate on bits [31:20]
-    OPCODE_I_TYPE,
     OPCODE_LOAD,
-    OPCODE_JALR: begin
-      imm = {{20{instr[31]}}, instr[31:20]}; 
+    OPCODE_JALR: begin 
+    	imm = {{20{instr[31]}}, instr[31:20]};
+    end
+
+    OPCODE_I_TYPE: begin
+      if (instr[14:12] == 3'b001 || instr[14:12] == 3'b101) begin
+          // SLLI, SRLI, SRAI
+          imm = {27'b0, instr[24:20]};   
+        end
+        else begin
+          imm = {{20{instr[31]}}, instr[31:20]};
+        end
     end
 
     // Immediate on bits [31:20] + [11:7]

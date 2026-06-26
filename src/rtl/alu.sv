@@ -37,7 +37,7 @@ always_comb begin
         ALU_SRL: alu_result = alu_port_a >> alu_port_b[4:0];
         ALU_SRA: alu_result = $signed(alu_port_a) >>> alu_port_b[4:0];
         ALU_SLT: alu_result = ($signed(alu_port_a) < $signed(alu_port_b)) ? 32'd1 : 32'd0;
-        ALU_SLTU:alu_result = (alu_port_a < alu_port_b) ? 32'd1 : 32'd0;
+        ALU_SLTU:alu_result = ($unsigned(alu_port_a) < $unsigned(alu_port_b)) ? 32'd1 : 32'd0;
         ALU_LUI: alu_result = alu_port_b;
         default: alu_result = 32'd0;
     endcase

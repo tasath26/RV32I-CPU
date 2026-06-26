@@ -16,14 +16,14 @@
 //============================================================
 
 module imem #(
-    parameter HEX_FILE = "simple.hex"
+    parameter IMEM_FILE = "simple.hex"
 )(
     input  logic [31:0] addr,
     output logic [31:0] instr
 );
-    logic [7:0] mem [0:1023]; // 4KB
+    logic [31:0] mem [0:255]; 
 
-    initial $readmemh(HEX_FILE, mem);
+    initial $readmemh(IMEM_FILE, mem);
 
     assign instr = mem[addr[31:2]]; 
 

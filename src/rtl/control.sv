@@ -58,19 +58,6 @@ module control
 
 localparam ENABLE = 1;
 
-// alu_src_a aliases 
-localparam ALU_SRC_RS1 = 1'b0;
-localparam ALU_SRC_PC  = 1'b1;
-
-// alu_src_b aliases
-localparam ALU_SRC_RS2 = 1'b0;
-localparam ALU_SRC_IMM = 1'b1;
-
-// wb_sel aliases
-localparam WB_SEL_ALU = 2'b00;
-localparam WB_SEL_MEM = 2'b01;
-localparam WB_SEL_PC  = 2'b10;
-
 always_comb begin
   reg_write   = 0;
   mem_write   = 0;

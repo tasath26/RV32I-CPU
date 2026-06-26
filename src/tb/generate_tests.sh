@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tests=("simple" "alu" "branch" "loadstore" "lui_auipc" "jump")
+tests=("simple" "alu" "branch" "loadstore" "lui_auipc" "jump" "stall" "forwarding" "loop" "nested_loop")
 
 echo -e "\n\n"
 echo "        Generating Tests"

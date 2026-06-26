@@ -24,9 +24,9 @@ package rv32i_pkg;
 
   // R-Type and I-Type funct7
   localparam FUNCT7_ADD = 7'b0000000;
-  localparam FUNCT7_SUB = 7'b0010100;
+  localparam FUNCT7_SUB = 7'b0100000;
   localparam FUNCT7_SRL = 7'b0000000;
-  localparam FUNCT7_SRA = 7'b0010100;
+  localparam FUNCT7_SRA = 7'b0100000;
 
   // Load Instruction funct3
   localparam FUNCT3_LB  = 3'b000;
@@ -79,5 +79,26 @@ package rv32i_pkg;
   localparam ALU_SLTU  = 4'b1001;
   localparam ALU_LUI   = 4'b1010;
   localparam ALU_INV   = 4'b1111; // Invalid
+
+  //Nop mapped to addi x0, x0, 0
+  localparam INSTR_NOP = 32'b00000000000000000000000000010011;
+ 
+  // alu_src_a aliases 
+  localparam ALU_SRC_RS1 = 1'b0;
+  localparam ALU_SRC_PC  = 1'b1;
+
+  // alu_src_b aliases
+  localparam ALU_SRC_RS2 = 1'b0;
+  localparam ALU_SRC_IMM = 1'b1;
+
+  // wb_sel aliases
+  localparam WB_SEL_ALU = 2'b00;
+  localparam WB_SEL_MEM = 2'b01;
+  localparam WB_SEL_PC  = 2'b10;
+
+  // Forwarding to EX Stage
+  localparam FWD_NO     = 2'b00;
+  localparam FWD_FROM_MEM = 2'b01;
+  localparam FWD_FROM_WB  = 2'b10;
 
 endpackage
