@@ -87,7 +87,7 @@ OR
 ### Usage
 1. Clone the repository:
 ```bash
-   git clone [https://github.com/tasath26/RV32I-CPU.git](https://github.com/tasath26/RV32I-CPU.git)
+   git clone https://github.com/tasath26/RV32I-CPU.git
    cd RV32I-CPU
 ```
     
